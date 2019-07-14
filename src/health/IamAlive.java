@@ -45,17 +45,22 @@ public class IamAlive extends HttpServlet {
 		String deviceJson = MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", id, null,true, null, null);
 		Gson  json = new Gson();
 		Device device = json.fromJson(deviceJson, new TypeToken<Device>() {}.getType());
+		String monitorStatus = ". This device is turned off for suspecious activity. ";
 		if (device!= null) {
 			device.setHealthCheckTime(new Date().getTime());
 			if ("y".equalsIgnoreCase(alarmTriggered) && device.isTurnOnHealthCheck()) {
 				device.setAlarmTriggered(true);
 				String makeAcallError = callSandeepPhoneNumbers(device.get_id());
 				notifySucpeciousActivityEmail(device, makeAcallError);
+				monitorStatus = device.getAlermNotificationText();
+				if (null != makeAcallError) {
+					monitorStatus += makeAcallError;
+				}
 			}
 			deviceJson = json.toJson(device, new TypeToken<Device>() {}.getType());
 			
 	        MangoDB.createNewDocumentInCollection("sanhoo-home-security", "device-id", deviceJson, null);
-			response.getWriter().append("Device name ").append(device.getName());
+			response.getWriter().append("Device name ").append(device.getName()+monitorStatus);
 		}else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    	return;
