@@ -1,0 +1,6 @@
+[
+        {"_id":"1", "name": "1 First Floor Gallary Door", "alarmTriggered": true, "turnOnHealthCheck": true, "healthCheckTime": 1563106796645},
+        {"_id":"2", "name": "2 First Floor Gallary Door", "alarmTriggered": false, "turnOnHealthCheck": false, "healthCheckTime": 1563106796645}
+        
+    ]
+

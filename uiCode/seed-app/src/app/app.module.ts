@@ -18,11 +18,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import {CheckboxModule} from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { HeaderComponent } from './comp/header/header.component';
 import { FooterComponent } from './comp/footer/footer.component';
 import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
 import {LoginService} from './comp/login/login.service';
+import {DeviceService} from './comp/home/services/deviceservice';
 import {Global} from './comp/global/global';
 
 const appRoutes: Routes = [
@@ -57,9 +59,10 @@ const appRoutes: Routes = [
         InputTextModule,
         DialogModule,
         ButtonModule,
-        SidebarModule
+        SidebarModule,
+        CheckboxModule
   ],
-  providers: [Location, {provide: LocationStrategy, useClass: HashLocationStrategy}, LoginService, Global],
+  providers: [DeviceService,Location, {provide: LocationStrategy, useClass: HashLocationStrategy}, LoginService, Global],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

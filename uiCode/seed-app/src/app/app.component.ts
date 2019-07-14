@@ -14,7 +14,7 @@ import {Global} from './comp/global/global';
 })
 export class AppComponent implements OnInit{
   regID:String;
-  title = 'seed-app';
+  title = 'Home Security';
 
   constructor(private _router: Router,private httpClient: HttpClient, 
     private loginService : LoginService, private global:Global){}
@@ -33,8 +33,8 @@ export class AppComponent implements OnInit{
       this.regID = window.localStorage.getItem('regID');
     }
     
-    this.global.navigationDisabled = false;
-    this.validateRegID(this.regID);
+    this.global.navigationDisabled = true;
+    //this.validateRegID(this.regID);
     
     console.log("AppComponent init method reg id "+this.regID+" url :  "+window.location.href)
   }

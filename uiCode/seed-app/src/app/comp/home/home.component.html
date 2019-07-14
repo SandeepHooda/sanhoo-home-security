@@ -1,0 +1,28 @@
+<div style="overflow-x:auto;">
+<table>
+<tr>
+    <th>  Name</th>
+    <th> Alarmed</th>
+    <th> Active/Snooz</th>
+    <th> Hearbeat</th>
+    <th> Moak Drill</th>
+</tr>
+<tr class="btn-group-button" *ngFor="let device of devices">
+ <td>  <span>{{device.name}}</span></td> 
+  
+ <td> <img *ngIf="device.alarmTriggered" src="assets/img/alarmed.jpg" style="width: 40px; height: 30px; padding-right: 10px;">
+    <img *ngIf="!device.alarmTriggered" src="assets/img/safe.jpg" style="width: 40px; height: 30px; padding-right: 10px;">
+     
+   
+ <td> 
+        <input class="healthCheck" type="checkbox" 
+        [(ngModel)]="device.turnOnHealthCheck"
+        (change)="updateDevice(device)"> 
+</td> 
+ <td>  <span>{{device.healthCheckTimeDisplay}}</span></td> 
+ <td>  <button class="btn success" (click)="moakDrill(device._id)">Drill</button></td> 
+
+</tr>
+</table>
+</div>
+
