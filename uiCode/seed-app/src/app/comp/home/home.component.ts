@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
     
   }
   private  moakDrill(_id:string):void{
-    window.open("https://sanhoo-home-security.appspot.com/IamAlive?id="+_id+"&alarmTriggered=n");
+    window.open("https://sanhoo-home-security.appspot.com/IamAlive?id="+_id+"&alarmTriggered=y");
   }
   
    
