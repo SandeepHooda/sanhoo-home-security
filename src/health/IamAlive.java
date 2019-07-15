@@ -48,9 +48,16 @@ public class IamAlive extends HttpServlet {
 		String monitorStatus = ". This device is turned off for suspecious activity. ";
 		if (device!= null) {
 			device.setHealthCheckTime(new Date().getTime());
-			if ("y".equalsIgnoreCase(alarmTriggered) && device.isTurnOnHealthCheck()) {
+			if ("y".equalsIgnoreCase(alarmTriggered)){
 				device.setAlarmTriggered(true);
+			}else {
+				device.setAlarmTriggered(false);
+			}
+					
+			if (device.isAlarmTriggered() && device.isTurnOnHealthCheck()) {
+				//Call
 				String makeAcallError = callSandeepPhoneNumbers(device.get_id());
+				//Send email
 				notifySucpeciousActivityEmail(device, makeAcallError);
 				monitorStatus = device.getAlermNotificationText();
 				if (null != makeAcallError) {

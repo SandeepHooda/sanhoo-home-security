@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Device } from './domain/device';
 
 import {DeviceService} from './services/deviceservice'
-
+import { IpAddress } from './domain/ipAddress';
 
 
 
@@ -15,32 +15,47 @@ export class HomeComponent implements OnInit {
 
    devices : Device[];
    cols: any[];
-   
+   externalIP :String;
   constructor(private deviceService: DeviceService) { 
       
   }
 
   ngOnInit() {
     
-      this.deviceService.getDevices().subscribe(
-        (devices: Array<Device>) => {
-          this.getDisplayDate(devices);
-          this.devices = devices
-          }, error => {         
-        }
-      );
-     
-
       this.cols = [
         { field: 'name', header: 'Name' },
         { field: 'alarmTriggered', header: 'Alarm' },
         { field: 'turnOnHealthCheck', header: 'Active/Passive' },
         { field: 'healthCheckTime', header: 'Last Hearbeat' }
     ];
-
+    this.getDeviceStatus();
+    this.getExternalIP();
      
   }
 
+   refresh():void{
+    this.getDeviceStatus();
+    this.getExternalIP();
+  }
+  private  getExternalIP():void{
+    this.deviceService.getExternalIP().subscribe(
+      (ipAddress: IpAddress) => {
+        let date :Date = new Date(ipAddress.time);
+        this.externalIP = ipAddress.myIP+ date.toString() +" # "+ipAddress.time;
+        }, error => {         
+      }
+    );
+  }
+  private  getDeviceStatus():void{
+
+    this.deviceService.getDevices().subscribe(
+      (devices: Array<Device>) => {
+        this.getDisplayDate(devices);
+        this.devices = devices
+        }, error => {         
+      }
+    );
+  }
   private  updateDevice(device:Device):void{
     
     this.deviceService.updateDevice(device).subscribe(
