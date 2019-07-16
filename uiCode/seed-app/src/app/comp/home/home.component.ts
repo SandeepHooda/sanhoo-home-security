@@ -15,23 +15,17 @@ export class HomeComponent implements OnInit {
 
    devices : Device[];
    cols: any[];
-   externalIP :String;
-  constructor(private deviceService: DeviceService) { 
+   externalIPString :String;
+   ipAddress:String;
+   systemInGoodhealth :boolean = true;
+   constructor(private deviceService: DeviceService) { 
       
   }
 
   ngOnInit() {
-    
-      this.cols = [
-        { field: 'name', header: 'Name' },
-        { field: 'alarmTriggered', header: 'Alarm' },
-        { field: 'turnOnHealthCheck', header: 'Active/Passive' },
-        { field: 'healthCheckTime', header: 'Last Hearbeat' }
-    ];
     this.getDeviceStatus();
     this.getExternalIP();
-     
-  }
+   }
 
    refresh():void{
     this.getDeviceStatus();
@@ -41,7 +35,9 @@ export class HomeComponent implements OnInit {
     this.deviceService.getExternalIP().subscribe(
       (ipAddress: IpAddress) => {
         let date :Date = new Date(ipAddress.time);
-        this.externalIP = ipAddress.myIP+ date.toString() +" # "+ipAddress.time;
+        this.ipAddress = ipAddress.myIP;
+        this.externalIPString =this.ipAddress +" "+ date.toString() ;
+        this.externalIPString =this.externalIPString.substr(0,this.externalIPString.indexOf('GMT'))
         }, error => {         
       }
     );
@@ -58,25 +54,75 @@ export class HomeComponent implements OnInit {
   }
   private  updateDevice(device:Device):void{
     
-    this.deviceService.updateDevice(device).subscribe(
+    let allDevices =  Array<Device>();
+    allDevices.push(device);
+    this.deviceService.updateDevice(allDevices).subscribe(
       (devices: Array<Device>) => {
         this.getDisplayDate(devices);
+        this.devices = [];
+        this.devices = devices
+        }, error => {         
+      }
+    );
+  }
+
+    enableAll():void{
+    for (let i=0; i<this.devices.length;i++){
+      this.devices[i].turnOnHealthCheck = true;
+    }
+    this.deviceService.updateDevice(this.devices).subscribe(
+      (devices: Array<Device>) => {
+        this.getDisplayDate(devices);
+        this.devices = [];
+        this.devices = devices
+        }, error => {         
+      }
+    );
+  }
+
+    disableAll():void{
+    for (let i=0; i<this.devices.length;i++){
+      this.devices[i].turnOnHealthCheck = false;
+    }
+    this.deviceService.updateDevice(this.devices).subscribe(
+      (devices: Array<Device>) => {
+        this.getDisplayDate(devices);
+        this.devices = [];
         this.devices = devices
         }, error => {         
       }
     );
   }
   private getDisplayDate(devices: Array<Device>):void{
+    this.systemInGoodhealth = true;
     for (let i=0;i<devices.length;i++){
+      if ( new Date().getTime() - devices[i].healthCheckTime > 30000 ){
+        devices[i].unplugged = true;
+        if (devices[i].turnOnHealthCheck){
+          this.systemInGoodhealth = false;//Un plugged and device is being monitored
+        }
+
+        if (devices[i].turnOnHealthCheck && devices[i].alarmTriggered){
+          this.systemInGoodhealth = false;//Alarmed and device is being monitored
+        }
+      }
       let date :Date = new Date(devices[i].healthCheckTime);
       devices[i].healthCheckTimeDisplay = date.toString();
+      devices[i].healthCheckTimeDisplay = devices[i].healthCheckTimeDisplay.substr(0,devices[i].healthCheckTimeDisplay.indexOf('GMT'))
+      date = new Date(devices[i].lastAlarmTime);
+      devices[i].lastAlarmTimeDisplay = date.toString();
+      devices[i].lastAlarmTimeDisplay = devices[i].lastAlarmTimeDisplay.substr(0,devices[i].lastAlarmTimeDisplay.indexOf('GMT'))
+      
+
     }
     
   }
   private  moakDrill(_id:string):void{
     window.open("https://sanhoo-home-security.appspot.com/IamAlive?id="+_id+"&alarmTriggered=y");
   }
-  
+   foscamOpen():void{
+    window.open("http://"+this.ipAddress+":7080/");
+  }
    
   
 }

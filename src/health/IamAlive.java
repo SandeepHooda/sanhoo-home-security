@@ -50,6 +50,7 @@ public class IamAlive extends HttpServlet {
 			device.setHealthCheckTime(new Date().getTime());
 			if ("y".equalsIgnoreCase(alarmTriggered)){
 				device.setAlarmTriggered(true);
+				device.setLastAlarmTime(device.getHealthCheckTime());
 			}else {
 				device.setAlarmTriggered(false);
 			}

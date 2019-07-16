@@ -24,4 +24,16 @@
   
   .success {background-color: #4CAF50;} /* Green */
   .success:hover {background-color: #46a049;}
+
+  .foscam{
+    background-image: url(../../../assets/img/foscam.jpg) no-repeat;
+    cursor:pointer;
+    border: none;
+}
+
+.header-img{
+  width: 50px; 
+  height: 40px;
+  padding-left: 20px; 
+}
   

@@ -68,7 +68,7 @@ public class HealthCheck extends HttpServlet {
 		    			}
 		    		}else if(aDevice.isTurnOnHealthCheck()) {
 		    			if ( (new Date().getTime() -aDevice.getHealthCheckTime()) > 60000*5) {//No status update since last five minute
-		    				notWell.add(aDevice.getName());
+		    				notWell.add(aDevice.getName());//Un plugged and device is being monitored
 		    			}else {
 		    				healthy.add(aDevice.getName());
 		    			}
@@ -76,6 +76,9 @@ public class HealthCheck extends HttpServlet {
 		    			sleepMode.add(aDevice.getName());
 		    		}
 		    		
+		    	}
+		    	if (notWell.size() < 1) {
+		    		return "All devices that are not snoozed are working good.";
 		    	}
 		    	EmailVO emalVO = new EmailVO();
 				emalVO.setUserName("personal.reminder.notification@gmail.com");

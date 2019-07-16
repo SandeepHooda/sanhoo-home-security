@@ -4,6 +4,7 @@ public class Device {
 	private String _id;
 	private String name;
 	private long healthCheckTime;
+	private long lastAlarmTime;
 	private boolean turnOnHealthCheck;
 	private boolean alarmTriggered;
 	private String alermNotificationText = "There is an suspicious activity on house number 55 Sector 27. Please call police to check.";
@@ -42,6 +43,12 @@ public class Device {
 	}
 	public void setAlermNotificationText(String alermNotificationText) {
 		this.alermNotificationText = alermNotificationText;
+	}
+	public long getLastAlarmTime() {
+		return lastAlarmTime;
+	}
+	public void setLastAlarmTime(long lastAlarmTime) {
+		this.lastAlarmTime = lastAlarmTime;
 	}
 
 }

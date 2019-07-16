@@ -28,7 +28,7 @@ export class DeviceService {
           ,this.httpOptions);
   }
 
-    updateDevice(device:Device): Observable<Array<Device>> {
+    updateDevice(device:Array<Device>): Observable<Array<Device>> {
        return this.http.post<Array<Device>>('/Devices', device,this.httpOptions);
     }
 }

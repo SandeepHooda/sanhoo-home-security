@@ -37,7 +37,7 @@ public class Devices extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String deviceJson = "["+ MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", null, null,true, null, null)+"]";
-		Gson  json = new Gson();
+		/*Gson  json = new Gson();
 		List<Device> allDevices = json.fromJson(deviceJson, new TypeToken<List<Device>>() {}.getType());
 		Iterator<Device> itr = allDevices.iterator();
 		while(itr.hasNext()) {
@@ -48,6 +48,7 @@ public class Devices extends HttpServlet {
 			}
 		}
 		deviceJson = json.toJson(allDevices, new TypeToken<List<Device>>() {}.getType());
+		*/
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
@@ -64,8 +65,17 @@ public class Devices extends HttpServlet {
 	            sb.append(s);
 	        }
 	     
-	       
-	        MangoDB.createNewDocumentInCollection("sanhoo-home-security", "device-id", sb.toString(), null);
+	        Gson  json = new Gson();
+			List<Device> allDevices = json.fromJson(sb.toString(), new TypeToken<List<Device>>() {}.getType());
+			if (null != allDevices) {
+				for (Device device: allDevices) {
+					String deviceJson = json.toJson(device, new TypeToken<Device>() {}.getType());
+					MangoDB.createNewDocumentInCollection("sanhoo-home-security", "device-id",deviceJson , null);
+				}
+				
+			}
+
+	        
 	        doGet(request,  response);
 	}
 

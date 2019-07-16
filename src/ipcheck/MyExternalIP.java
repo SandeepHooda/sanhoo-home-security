@@ -39,7 +39,7 @@ public class MyExternalIP extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String ip= request.getParameter("ip");
 		if (null != ip ) {
-			String ipJson = "{\"_id\": \"ip\",\"myIP\": \""+ip+"\", \"time\": \""+(new Date().getTime())+"\"}";
+			String ipJson = "{\"_id\": \"ip\",\"myIP\": \""+ip+"\", \"time\": "+(new Date().getTime())+"}";
 			MangoDB.createNewDocumentInCollection("sanhoo-home-security", "external-ip", ipJson, null);
 			response.getWriter().append("Your IP is : ").append(ip);
 		}else {
