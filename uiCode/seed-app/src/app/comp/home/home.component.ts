@@ -96,6 +96,9 @@ export class HomeComponent implements OnInit {
   private getDisplayDate(devices: Array<Device>):void{
     this.systemInGoodhealth = true;
     for (let i=0;i<devices.length;i++){
+      if (devices[i]._id == '0'){
+        continue;
+      }
       if ( new Date().getTime() - devices[i].healthCheckTime > 30000 ){
         devices[i].unplugged = true;
         if (devices[i].turnOnHealthCheck){
