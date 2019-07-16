@@ -18,9 +18,11 @@ export class DeviceService {
     constructor(private http: HttpClient) {}
 
     getDevices(): Observable<Array<Device>>{
-        return this.http.get<Array<Device>>('/Devices'
-        //'/Devices' 'assets/data/devices.json'
-            ,this.httpOptions);
+      let url = '/Devices';
+      if (window.location.href.indexOf('appspot.com') < 0){
+        url = 'assets/data/devices.json';
+      }
+        return this.http.get<Array<Device>>(url,this.httpOptions);
     }
 
     getExternalIP(): Observable<IpAddress>{

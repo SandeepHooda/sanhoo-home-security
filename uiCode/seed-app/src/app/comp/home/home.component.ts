@@ -104,10 +104,9 @@ export class HomeComponent implements OnInit {
         if (devices[i].turnOnHealthCheck){
           this.systemInGoodhealth = false;//Un plugged and device is being monitored
         }
-
-        if (devices[i].turnOnHealthCheck && devices[i].alarmTriggered){
-          this.systemInGoodhealth = false;//Alarmed and device is being monitored
-        }
+      }
+      if (devices[i].turnOnHealthCheck && devices[i].alarmTriggered){
+        this.systemInGoodhealth = false;//Alarmed and device is being monitored
       }
       let date :Date = new Date(devices[i].healthCheckTime);
       devices[i].healthCheckTimeDisplay = date.toString();
