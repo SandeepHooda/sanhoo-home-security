@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit {
       if (devices[i]._id == '0'){
         continue;
       }
-      if ( new Date().getTime() - devices[i].healthCheckTime > 30000 ){
+      if ( new Date().getTime() - devices[i].healthCheckTime > 300000 ){// 5 minutes
         devices[i].unplugged = true;
         if (devices[i].turnOnHealthCheck){
           this.systemInGoodhealth = false;//Un plugged and device is being monitored
