@@ -7,6 +7,7 @@
 
 
 <img  src="assets/img/foscam.jpg" class="header-img"  (click)="foscamOpen()">
+<img  src="assets/img/picam.jpg" class="header-img"  (click)="piOpen()">
 <img *ngIf="systemInGoodhealth" src="assets/img/locked.jpg" class="header-img">
 <img *ngIf="!systemInGoodhealth" src="assets/img/unlocked.jpg" class="header-img">
         
@@ -28,7 +29,7 @@
  <td>  <span>{{device.name}}</span></td>
   
  <td> 
-     <span *ngIf="device._id != '0'">
+     <span *ngIf="device.deviceType == 'doorSensor'">
         <span *ngIf="device.unplugged">
             <img  src="assets/img/unplugged.jpg" style="width: 40px; height: 30px; padding-right: 10px;">
         </span>
@@ -44,13 +45,13 @@
         [(ngModel)]="device.turnOnHealthCheck"
         (change)="updateDevice(device)"> 
 </td> 
- <td>  <span *ngIf="device._id != '0'">
+ <td>  <span *ngIf="device.deviceType == 'doorSensor'">
         <img *ngIf="device.unplugged" src="assets/img/broken-heart.jpg" style="width: 40px; height: 30px; padding-right: 10px;">
         <img *ngIf="!device.unplugged" src="assets/img/heart.jpg" style="width: 40px; height: 30px; padding-right: 10px;">
             {{device.healthCheckTimeDisplay}}
     </span></td> 
- <td>  <span *ngIf="device._id != '0'">{{device.lastAlarmTimeDisplay}}</span></td>
- <td>  <button *ngIf="device._id != '0'" class="btn success" (click)="moakDrill(device._id)">Drill</button></td> 
+ <td>  <span *ngIf="device.deviceType == 'doorSensor'">{{device.lastAlarmTimeDisplay}}</span></td>
+ <td>  <button *ngIf="device.deviceType == 'doorSensor'" class="btn success" (click)="moakDrill(device._id)">Drill</button></td> 
 
 </tr>
 </table>

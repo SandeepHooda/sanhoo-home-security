@@ -8,5 +8,6 @@ export interface Device {
     turnOnHealthCheck:boolean;
     alarmTriggered:boolean;
     unplugged:boolean;
+    deviceType : String;
    
 }

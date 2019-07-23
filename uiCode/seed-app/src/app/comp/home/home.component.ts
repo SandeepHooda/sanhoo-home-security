@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
   private getDisplayDate(devices: Array<Device>):void{
     this.systemInGoodhealth = true;
     for (let i=0;i<devices.length;i++){
-      if (devices[i]._id == '0'){
+      if (devices[i].deviceType != 'doorSensor'){
         continue;
       }
       if ( new Date().getTime() - devices[i].healthCheckTime > 300000 ){// 5 minutes
@@ -124,6 +124,10 @@ export class HomeComponent implements OnInit {
   }
    foscamOpen():void{
     window.open("http://"+this.ipAddress+":7080/");
+  }
+
+  piOpen():void{
+    window.open("http://"+this.ipAddress+":8080/");
   }
    
   

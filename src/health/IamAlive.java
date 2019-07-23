@@ -48,7 +48,7 @@ public class IamAlive extends HttpServlet {
 		String monitorStatus = ". This device is turned off for suspecious activity. ";
 		if (device!= null) {
 			device.setHealthCheckTime(new Date().getTime());
-			if ("y".equalsIgnoreCase(alarmTriggered)){
+			if ("y".equalsIgnoreCase(alarmTriggered) && "doorSensor".equals( device.getDeviceType()) ){
 				device.setAlarmTriggered(true);
 				device.setLastAlarmTime(device.getHealthCheckTime());
 			}else {

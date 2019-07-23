@@ -7,6 +7,7 @@ public class Device {
 	private long lastAlarmTime;
 	private boolean turnOnHealthCheck;
 	private boolean alarmTriggered;
+	private String deviceType ;//camera, doorSensor
 	private String alermNotificationText = "There is an suspicious activity on house number 55 Sector 27. Please call police to check.";
 	public String get_id() {
 		return _id;
@@ -49,6 +50,12 @@ public class Device {
 	}
 	public void setLastAlarmTime(long lastAlarmTime) {
 		this.lastAlarmTime = lastAlarmTime;
+	}
+	public String getDeviceType() {
+		return deviceType;
+	}
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
 	}
 
 }
