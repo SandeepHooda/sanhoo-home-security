@@ -41,10 +41,26 @@ public class HealthCheck extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String status = "";
+		try {
+			status = monitorHealth();
+			Thread.sleep(20000);
+			status = monitorHealth();
+			Thread.sleep(20000);
+			status = monitorHealth();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.getWriter().append(status);
+	}
+	
+	private String monitorHealth() {
 		String deviceJson = "["+ MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", null, null,true, null, null)+"]";
 		Gson  json = new Gson();
 		List<Device> allDevices = json.fromJson(deviceJson, new TypeToken<List<Device>>() {}.getType());
-		response.getWriter().append(notifyHealthStatus(allDevices));
+		return notifyHealthStatus(allDevices);
 	}
 
 	/**
@@ -62,16 +78,21 @@ public class HealthCheck extends HttpServlet {
 		    	Set<String> notWell = new HashSet<String>();
 		    	Set<String> sleepMode = new HashSet<String>();
 		    	for (Device aDevice: allDevices) {
+		    		
 		    		if ("0".equals(aDevice.get_id())) {
 		    			if(!aDevice.isTurnOnHealthCheck()) {
 		    				return "Please turn on \"TurnOnHealthCheck\" flag for device id \"0\" on \"sanhoo-home-security@device-id \"";//No Need to send health status email;
 		    			}
 		    		}else if(aDevice.isTurnOnHealthCheck()) {
-		    			if ( (new Date().getTime() -aDevice.getHealthCheckTime()) > 60000*5) {//No status update since last five minute
-		    				notWell.add(aDevice.getName());//Un plugged and device is being monitored
-		    			}else {
-		    				healthy.add(aDevice.getName());
+		    			if ("doorSensor".equals(aDevice.getDeviceType())) {
+		    				if ( (new Date().getTime() -aDevice.getHealthCheckTime()) > 30000) {//No status update since last 30 seconds. ESPP send updates every 6 seconds
+			    				//but some updates might got miss so give some time
+			    				notWell.add(aDevice.getName());//Un plugged and device is being monitored
+			    			}else {
+			    				healthy.add(aDevice.getName());
+			    			}
 		    			}
+		    			
 		    		}else {
 		    			sleepMode.add(aDevice.getName());
 		    		}
@@ -80,6 +101,7 @@ public class HealthCheck extends HttpServlet {
 		    	if (notWell.size() < 1) {
 		    		return "All devices that are not snoozed are working good.";
 		    	}
+		    	String makeAcallError = IamAlive.callSandeepPhoneNumbers("0");
 		    	EmailVO emalVO = new EmailVO();
 				emalVO.setUserName("personal.reminder.notification@gmail.com");
 				
@@ -87,6 +109,9 @@ public class HealthCheck extends HttpServlet {
 				emalVO.setHtmlContent("<b>Device Not working : </b>"+notWell+"<br/><br/><b>Device In good health:</b> "+healthy+
 						"<br/><br/><b>Sleep mode :</b> "+sleepMode+"<br/><br/>"+
 						"If you don't want to receive these emails then please turn off \"TurnOnHealthCheck\" flag for device id \"0\" on \"sanhoo-home-security@device-id \"");
+				if (null != makeAcallError) {
+					emalVO.setHtmlContent(makeAcallError+" <br/><br/> "+ emalVO.getHtmlContent());
+				}
 				EmailAddess from = new EmailAddess();
 				from.setAddress(emalVO.getUserName());
 				

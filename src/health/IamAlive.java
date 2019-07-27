@@ -76,7 +76,7 @@ public class IamAlive extends HttpServlet {
 		
 	}
 	
-	private String callSandeepPhoneNumbers(String id) {
+	public static String callSandeepPhoneNumbers(String id) {
 		String makeAcallError = null;
 		try {
 			String fromPhoneNumber = "111111110"+id;

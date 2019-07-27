@@ -17,8 +17,12 @@ import com.communication.email.EmailAddess;
 import com.communication.email.EmailVO;
 import com.communication.email.MailService;
 import com.communication.phone.call.MakeACall;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import health.IamAlive;
 import health.vo.Device;
+import mangodb.MangoDB;
 
 /**
  * Servlet implementation class HumanDetected
@@ -43,15 +47,28 @@ public class HumanDetected extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String deviceID = request.getParameter("deviceID");
+		 Gson  json = new Gson();
+		String deviceJson =  MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", deviceID, null,true, null, null);
+		Device device = json.fromJson(deviceJson, new TypeToken<Device>() {}.getType());
+		if (device.isTurnOnHealthCheck()) {
+			String makeAcallError = IamAlive.callSandeepPhoneNumbers(device.get_id());
+			String msg = "Made a call to device ID "+deviceID+" "+device.getName();
+			if (null != makeAcallError) {
+				msg += "Erroe :"+ makeAcallError;
+			}
+			response.getWriter().print(msg);
+		}else {
+			response.getWriter().print("device ID "+deviceID+" "+device.getName()+" is turned off for for health ckeck");
+		}
 		
-		String makeAcallError = callSandeepPhoneNumbers("3");
 		
-		notifySucpeciousActivityEmail( makeAcallError, request.getParameter("imageBase64Str"));
+		/*notifySucpeciousActivityEmail( makeAcallError, request.getParameter("imageBase64Str"));
 		EmailAddess toAddress = new EmailAddess();
 		toAddress.setAddress("sonu.hooda@gmail.com");
 		toAddress.setLabel("Sandeep");
 		new  MailService().sendSimpleMail(prepareEmailVO(toAddress, "Motion detedted by raspberry ", 
-				 " Human image ", request.getParameter("imageBase64Str"), "image.jpg"));
+				 " Human image ", request.getParameter("imageBase64Str"), "image.jpg"));*/
 	
 		
 	}
@@ -68,24 +85,7 @@ public class HumanDetected extends HttpServlet {
 		
 	}
 	
-	private String callSandeepPhoneNumbers(String id) {
-		String makeAcallError = null;
-		try {
-			String fromPhoneNumber = "111111110"+id;
-			MakeACall.call("919216411835", id,fromPhoneNumber);
-		}catch(Exception e) {
-			e.printStackTrace();
-			makeAcallError  = e.getLocalizedMessage();
-		}
-		
-		try {
-			//MakeACall.call("919316046895", id);
-		}catch(Exception e) {
-			e.printStackTrace();
-			makeAcallError  = e.getLocalizedMessage();
-		}
-		return makeAcallError;
-	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
