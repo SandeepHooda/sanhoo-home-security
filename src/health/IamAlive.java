@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import health.vo.Device;
+import health.vo.PhoneNumbers;
 import mangodb.MangoDB;
 
 /**
@@ -45,6 +46,7 @@ public class IamAlive extends HttpServlet {
 		String deviceJson = MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", id, null,true, null, null);
 		Gson  json = new Gson();
 		Device device = json.fromJson(deviceJson, new TypeToken<Device>() {}.getType());
+		callSandeepPhoneNumbers(device.get_id());
 		String monitorStatus = ". This device is turned off for suspecious activity. ";
 		if (device!= null) {
 			device.setHealthCheckTime(new Date().getTime());
@@ -80,7 +82,18 @@ public class IamAlive extends HttpServlet {
 		String makeAcallError = null;
 		try {
 			String fromPhoneNumber = "111111110"+id;
-			MakeACall.call("919216411835", id,fromPhoneNumber);
+			Gson  json = new Gson();
+			String phoneNumbersjson =  MangoDB.getDocumentWithQuery("sanhoo-home-security", "phone-numbers", "0", null,true, null, null);
+			PhoneNumbers phoneNumbers = json.fromJson(phoneNumbersjson, new TypeToken<PhoneNumbers>() {}.getType());
+			if (null != phoneNumbers && phoneNumbers.getPhoneNumbers() != null && phoneNumbers.getPhoneNumbers().size() >0) {
+				System.out.println("Phone from DB "+ phoneNumbers.getPhoneNumbers());
+				for (String phoneNumber : phoneNumbers.getPhoneNumbers()) {
+					MakeACall.call(phoneNumber, id,fromPhoneNumber);
+				}
+			}else {
+				MakeACall.call("919216411835", id,fromPhoneNumber);
+			}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			makeAcallError  = e.getLocalizedMessage();

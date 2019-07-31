@@ -12,7 +12,7 @@ import {DeleteAll_VO} from './domain/DeleteAll_VO';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-   deletefoscamInboxDaily : boolean;
+
    devices : Device[];
    cols: any[];
    externalIPString :String;
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.getDeviceStatus();
     this.getExternalIP();
-    this.getEmailAutoDeleteStatus();
+   
    }
 
    refresh():void{
@@ -53,22 +53,8 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-  public toggleEmailDeletePrcocess():void{
-    this.deviceService.toggleEmailDeletePrcocess().subscribe(
-      (status: DeleteAll_VO) => {
-        this.deletefoscamInboxDaily = status.deleteAll;
-        }, error => {         
-      }
-    );
-  }
-  public getEmailAutoDeleteStatus():void{
-    this.deviceService.getEmailAutoDeleteStatus().subscribe(
-      (status: DeleteAll_VO) => {
-        this.deletefoscamInboxDaily = status.deleteAll;
-        }, error => {         
-      }
-    );
-  }
+  
+  
   private  updateDevice(device:Device):void{
     
     let allDevices =  Array<Device>();

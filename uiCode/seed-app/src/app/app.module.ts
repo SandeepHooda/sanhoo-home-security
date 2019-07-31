@@ -26,10 +26,13 @@ import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common'
 import {LoginService} from './comp/login/login.service';
 import {DeviceService} from './comp/home/services/deviceservice';
 import {Global} from './comp/global/global';
+import { HelpComponent } from './comp/help/help.component';
+import { SettingsComponent } from './comp/settings/settings.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'addcash',      component: CashComponent },
+  { path: 'help',      component: HelpComponent },
+  { path: 'settings',      component: SettingsComponent },
   { path: 'login',      component: LoginComponent },
   { path: '',  redirectTo: '/home',  pathMatch: 'full'},
   { path: '**', component: HomeComponent }
@@ -42,7 +45,9 @@ const appRoutes: Routes = [
     CashComponent,
     LoginComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    HelpComponent,
+    SettingsComponent
   ],
   imports: [
     RouterModule,

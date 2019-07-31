@@ -12,6 +12,8 @@ body {
     
 }
 
+
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -9052,7 +9054,7 @@ header .navbar-nav>li>a .ico .flaticon {
 	float: none;
 	background: #f0f0f0;
 	height: 50px;
-    padding-top: 20px;
+   /* padding-top: 20px;*/
     border-top: 1px solid #a0a0a0;
 }
 
