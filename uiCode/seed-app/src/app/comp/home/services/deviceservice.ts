@@ -38,7 +38,7 @@ export class DeviceService {
       return this.http.post<DeleteAll_VO>('/DeleteAllEmails', null,this.httpOptions);
    }
    getEmailAutoDeleteStatus(): Observable<DeleteAll_VO> {
-    return this.http.get<DeleteAll_VO>('/DeleteAllEmails', this.httpOptions);
+    return this.http.get<DeleteAll_VO>('/DeleteAllEmails?getStatus=true', this.httpOptions);
  }
    
 }
