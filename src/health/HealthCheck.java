@@ -45,11 +45,11 @@ public class HealthCheck extends HttpServlet {
 		String status = "";
 		try {
 			status = monitorHealth();
-			Thread.sleep(20000);
-			status = monitorHealth();
-			Thread.sleep(20000);
-			status = monitorHealth();
-		} catch (InterruptedException e) {
+			//Thread.sleep(20000);
+			//status = monitorHealth();
+			//Thread.sleep(20000);
+			//status = monitorHealth();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

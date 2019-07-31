@@ -3,7 +3,7 @@ import { Device } from './domain/device';
 
 import {DeviceService} from './services/deviceservice'
 import { IpAddress } from './domain/ipAddress';
-
+import {DeleteAll_VO} from './domain/DeleteAll_VO';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { IpAddress } from './domain/ipAddress';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+   deletefoscamInboxDaily : boolean;
    devices : Device[];
    cols: any[];
    externalIPString :String;
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.getDeviceStatus();
     this.getExternalIP();
+    this.getEmailAutoDeleteStatus();
    }
 
    refresh():void{
@@ -48,6 +49,22 @@ export class HomeComponent implements OnInit {
       (devices: Array<Device>) => {
         this.getDisplayDate(devices);
         this.devices = devices
+        }, error => {         
+      }
+    );
+  }
+  public toggleEmailDeletePrcocess():void{
+    this.deviceService.toggleEmailDeletePrcocess().subscribe(
+      (status: DeleteAll_VO) => {
+        this.deletefoscamInboxDaily = status.deleteAll;
+        }, error => {         
+      }
+    );
+  }
+  public getEmailAutoDeleteStatus():void{
+    this.deviceService.getEmailAutoDeleteStatus().subscribe(
+      (status: DeleteAll_VO) => {
+        this.deletefoscamInboxDaily = status.deleteAll;
         }, error => {         
       }
     );

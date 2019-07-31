@@ -5,6 +5,7 @@ import { IpAddress } from '../domain/ipAddress';
 
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import {DeleteAll_VO} from '../domain/DeleteAll_VO';
 
 @Injectable()
 export class DeviceService {
@@ -33,4 +34,11 @@ export class DeviceService {
     updateDevice(device:Array<Device>): Observable<Array<Device>> {
        return this.http.post<Array<Device>>('/Devices', device,this.httpOptions);
     }
+    toggleEmailDeletePrcocess(): Observable<DeleteAll_VO> {
+      return this.http.post<DeleteAll_VO>('/DeleteAllEmails', null,this.httpOptions);
+   }
+   getEmailAutoDeleteStatus(): Observable<DeleteAll_VO> {
+    return this.http.get<DeleteAll_VO>('/DeleteAllEmails', this.httpOptions);
+ }
+   
 }
