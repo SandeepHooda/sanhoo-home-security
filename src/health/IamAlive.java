@@ -46,7 +46,7 @@ public class IamAlive extends HttpServlet {
 		String deviceJson = MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", id, null,true, null, null);
 		Gson  json = new Gson();
 		Device device = json.fromJson(deviceJson, new TypeToken<Device>() {}.getType());
-		callSandeepPhoneNumbers(device.get_id());
+		
 		String monitorStatus = ". This device is turned off for suspecious activity. ";
 		if (device!= null) {
 			device.setHealthCheckTime(new Date().getTime());
