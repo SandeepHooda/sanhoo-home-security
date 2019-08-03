@@ -2,6 +2,8 @@ package health;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import health.vo.Device;
+import health.vo.DeviceComparator;
 import mangodb.MangoDB;
 
 /**
@@ -37,18 +40,11 @@ public class Devices extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String deviceJson = "["+ MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", null, null,true, null, null)+"]";
-		/*Gson  json = new Gson();
+		Gson  json = new Gson();
 		List<Device> allDevices = json.fromJson(deviceJson, new TypeToken<List<Device>>() {}.getType());
-		Iterator<Device> itr = allDevices.iterator();
-		while(itr.hasNext()) {
-			Device d = itr.next();
-			if ("0".equals(d.get_id())) {
-				itr.remove();
-				break;
-			}
-		}
+		Collections.sort(allDevices, new DeviceComparator());
 		deviceJson = json.toJson(allDevices, new TypeToken<List<Device>>() {}.getType());
-		*/
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();

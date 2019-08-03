@@ -85,9 +85,9 @@ public class HealthCheck extends HttpServlet {
 		    			}
 		    		}else if(aDevice.isTurnOnHealthCheck()) {
 		    			if ("doorSensor".equals(aDevice.getDeviceType())) {
-		    				if ( (new Date().getTime() -aDevice.getHealthCheckTime()) > 30000) {//No status update since last 30 seconds. ESPP send updates every 6 seconds
+		    				if ( (new Date().getTime() -aDevice.getHealthCheckTime()) > aDevice.getHeatBeatTimeout()) {//No status update since last 30 seconds. ESPP send updates every 6 seconds
 			    				//but some updates might got miss so give some time
-			    				notWell.add(aDevice.getName());//Un plugged and device is being monitored
+			    				notWell.add(aDevice.getName());//Device is Un plugged and device is being monitored
 			    			}else {
 			    				healthy.add(aDevice.getName());
 			    			}

@@ -59,7 +59,11 @@ public class IamAlive extends HttpServlet {
 					
 			if (device.isAlarmTriggered() && device.isTurnOnHealthCheck()) {
 				//Call
-				String makeAcallError = callSandeepPhoneNumbers(device.get_id());
+				String makeAcallError = null;
+				if (!device.isAlertType_emailOnly()) {
+					callSandeepPhoneNumbers(device.get_id());
+				}
+				
 				//Send email
 				notifySucpeciousActivityEmail(device, makeAcallError);
 				monitorStatus = device.getAlermNotificationText();
@@ -108,7 +112,7 @@ public class IamAlive extends HttpServlet {
 		return makeAcallError;
 	}
 	
-	private void  notifySucpeciousActivityEmail(Device device, String makeAcallError)  {
+	public static void  notifySucpeciousActivityEmail(Device device, String makeAcallError)  {
 		EmailVO emalVO = new EmailVO();
 		emalVO.setUserName("personal.reminder.notification@gmail.com");
 		

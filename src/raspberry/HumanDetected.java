@@ -52,11 +52,16 @@ public class HumanDetected extends HttpServlet {
 		String deviceJson =  MangoDB.getDocumentWithQuery("sanhoo-home-security", "device-id", deviceID, null,true, null, null);
 		Device device = json.fromJson(deviceJson, new TypeToken<Device>() {}.getType());
 		if (device.isTurnOnHealthCheck()) {
-			String makeAcallError = IamAlive.callSandeepPhoneNumbers(device.get_id());
+			String makeAcallError = null;
+			if(!device.isAlertType_emailOnly()) {
+				IamAlive.callSandeepPhoneNumbers(device.get_id());
+			}
+			
 			String msg = "Made a call to device ID "+deviceID+" "+device.getName();
 			if (null != makeAcallError) {
-				msg += "Erroe :"+ makeAcallError;
+				msg += "Error :"+ makeAcallError;
 			}
+			IamAlive.notifySucpeciousActivityEmail( device,  makeAcallError);
 			response.getWriter().print(msg);
 		}else {
 			response.getWriter().print("device ID "+deviceID+" "+device.getName()+" is turned off for for health ckeck");

@@ -2,13 +2,16 @@ package health.vo;
 
 public class Device {
 	private String _id;
+	private int displayOrder;
 	private String name;
 	private long healthCheckTime;
 	private long lastAlarmTime;
+	private long heatBeatTimeout =30000;
 	private boolean turnOnHealthCheck;
 	private boolean alarmTriggered;
 	private String deviceType ;//camera, doorSensor
 	private String alermNotificationText = "There is an suspicious activity on house number 55 Sector 27. Please call police to check.";
+	private boolean alertType_emailOnly;
 	public String get_id() {
 		return _id;
 	}
@@ -56,6 +59,24 @@ public class Device {
 	}
 	public void setDeviceType(String deviceType) {
 		this.deviceType = deviceType;
+	}
+	public long getHeatBeatTimeout() {
+		return heatBeatTimeout;
+	}
+	public void setHeatBeatTimeout(long heatBeatTimeout) {
+		this.heatBeatTimeout = heatBeatTimeout;
+	}
+	public int getDisplayOrder() {
+		return displayOrder;
+	}
+	public void setDisplayOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+	public boolean isAlertType_emailOnly() {
+		return alertType_emailOnly;
+	}
+	public void setAlertType_emailOnly(boolean alertType_emailOnly) {
+		this.alertType_emailOnly = alertType_emailOnly;
 	}
 
 }
