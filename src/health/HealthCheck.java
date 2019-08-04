@@ -72,7 +72,7 @@ public class HealthCheck extends HttpServlet {
 	}
 	
 	private static String notifyHealthStatus(List<Device> allDevices)  {
-		
+		    boolean phoneCallRequired = false;
 		    if (null !=allDevices && allDevices.size()>0 ) {
 		    	Set<String> healthy = new HashSet<String>();
 		    	Set<String> notWell = new HashSet<String>();
@@ -88,6 +88,9 @@ public class HealthCheck extends HttpServlet {
 		    				if ( (new Date().getTime() -aDevice.getHealthCheckTime()) > aDevice.getHeatBeatTimeout()) {//No status update since last 30 seconds. ESPP send updates every 6 seconds
 			    				//but some updates might got miss so give some time
 			    				notWell.add(aDevice.getName());//Device is Un plugged and device is being monitored
+			    				if (!aDevice.isAlertType_emailOnly()) {//If a device is on "email only" alert then no need to make a cal for that device
+			    					phoneCallRequired = true;
+			    				}
 			    			}else {
 			    				healthy.add(aDevice.getName());
 			    			}
@@ -101,7 +104,10 @@ public class HealthCheck extends HttpServlet {
 		    	if (notWell.size() < 1) {
 		    		return "All devices that are not snoozed are working good.";
 		    	}
-		    	String makeAcallError = IamAlive.callSandeepPhoneNumbers("0");
+		    	String makeAcallError = null;
+		    	if (phoneCallRequired) {
+		    		makeAcallError = IamAlive.callSandeepPhoneNumbers("0");
+		    	}
 		    	EmailVO emalVO = new EmailVO();
 				emalVO.setUserName("personal.reminder.notification@gmail.com");
 				
