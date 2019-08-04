@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit {
       if (devices[i].deviceType != 'doorSensor'){
         continue;
       }
-      if ( new Date().getTime() - devices[i].healthCheckTime > 300000 ){// 5 minutes
+      if ( new Date().getTime() - devices[i].healthCheckTime > devices[i].heatBeatTimeout ){// 5 minutes
         devices[i].unplugged = true;
         if (devices[i].turnOnHealthCheck){
           this.systemInGoodhealth = false;//Un plugged and device is being monitored
