@@ -12,5 +12,6 @@ export interface Device {
     unplugged:boolean;
     deviceType : String;
     alertType_emailOnly: boolean;
+    disabledHelthCheckbox:boolean;
    
 }

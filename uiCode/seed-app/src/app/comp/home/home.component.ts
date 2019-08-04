@@ -56,7 +56,12 @@ export class HomeComponent implements OnInit {
   
   
   private  updateDevice(device:Device):void{
-    
+    if (device.alertType_emailOnly){
+      device.turnOnHealthCheck = true;
+      device.disabledHelthCheckbox = true;
+    }else {
+      device.disabledHelthCheckbox = false;
+    }
     let allDevices =  Array<Device>();
     allDevices.push(device);
     this.deviceService.updateDevice(allDevices).subscribe(

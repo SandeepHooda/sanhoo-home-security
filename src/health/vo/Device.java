@@ -12,6 +12,7 @@ public class Device {
 	private String deviceType ;//camera, doorSensor
 	private String alermNotificationText = "There is an suspicious activity on house number 55 Sector 27. Please call police to check.";
 	private boolean alertType_emailOnly;
+	private boolean disabledHelthCheckbox;
 	public String get_id() {
 		return _id;
 	}
@@ -77,6 +78,12 @@ public class Device {
 	}
 	public void setAlertType_emailOnly(boolean alertType_emailOnly) {
 		this.alertType_emailOnly = alertType_emailOnly;
+	}
+	public boolean isDisabledHelthCheckbox() {
+		return disabledHelthCheckbox;
+	}
+	public void setDisabledHelthCheckbox(boolean disabledHelthCheckbox) {
+		this.disabledHelthCheckbox = disabledHelthCheckbox;
 	}
 
 }

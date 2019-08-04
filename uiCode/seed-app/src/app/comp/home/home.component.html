@@ -42,7 +42,7 @@
     </span> 
    
  <td> 
-        <input class="healthCheck" type="checkbox" 
+        <input class="healthCheck" type="checkbox" [disabled]="device.disabledHelthCheckbox"
         [(ngModel)]="device.turnOnHealthCheck"
         (change)="updateDevice(device)"> 
 </td> 
