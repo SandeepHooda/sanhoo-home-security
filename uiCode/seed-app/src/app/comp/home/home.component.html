@@ -16,17 +16,18 @@
 <div style="overflow-x:auto;">
 <table>
 <tr>
-    <th>  ID</th>
+    
     <th>  Name</th>
     <th> Alarmed</th>
     <th> Active/Snooz</th>
     <th> Email Only</th>
     <th> Heart beat</th>
     <th> Last Alarm</th>
+    <th>  ID</th>
     <th> Moak Drill</th>
 </tr>
 <tr class="btn-group-button" *ngFor="let device of devices">
- <td>  <span>{{device._id}}</span></td> 
+  
  <td>  <span>{{device.name}}</span></td>
   
  <td> 
@@ -57,6 +58,7 @@
             {{device.healthCheckTimeDisplay}}
     </span></td> 
  <td>  <span *ngIf="device.deviceType == 'doorSensor'">{{device.lastAlarmTimeDisplay}}</span></td>
+ <td>  <span>{{device._id}}</span></td>
  <td>  <button *ngIf="device.deviceType == 'doorSensor'" class="btn success" (click)="moakDrill(device._id)">Drill</button></td> 
 
 </tr>
