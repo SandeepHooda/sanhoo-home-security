@@ -133,6 +133,9 @@ export class HomeComponent implements OnInit {
    foscamOpen():void{
     window.open("http://"+this.ipAddress+":7080/");
   }
+  d3dOpen():void{
+    window.open("http://"+this.ipAddress+":5000/");
+  }
 
   piOpen():void{
     window.open("http://"+this.ipAddress+":8080/");
